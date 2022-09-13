@@ -1,4 +1,0 @@
-Running: xsim.dir/DFlipFlopTester_behav/xsimk.exe -simmode gui -wdb DFlipFlopTester_behav.wdb -simrunnum 0 -socket 57040
-Design successfully loaded
-Design Loading Memory Usage: 7092 KB (Peak: 7092 KB)
-Design Loading CPU Usage: 61 ms
