@@ -22,13 +22,14 @@
 
 module InputProcessor(output out, input in, clk);
     parameter BITS = 1;
+    parameter DEBOUNCE_BITS = 4;
     
     wire [BITS:0] in, out, debounced,synchronized;
     
     generate 
         for(genvar i = 0; i < BITS; i = i+1) begin
             Synchronizer s(synchronized[i],in[i],clk);
-            Debounce d(debounced[i], synchronized[i], clk);
+            Debounce #(DEBOUNCE_BITS) d(debounced[i], synchronized[i], clk);
             SinglePulser sp(out[i], debounced[i], clk);
         end
     endgenerate

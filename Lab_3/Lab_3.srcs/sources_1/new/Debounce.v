@@ -21,14 +21,15 @@
 
 
 module Debounce(output out,input in, clk);
+    parameter BITS = 4;
     reg state = 0; 
     reg out = 0;
-    reg [5:0] count = 0;
+    reg [BITS:0] count = 0;
     
     always @(posedge clk) begin
             
         if (state == in) 
-            if (count == 31) out = state;
+            if (count == (1<<BITS)-1) out = state;
             else count = count + 1;
         else begin
             count = 1;
