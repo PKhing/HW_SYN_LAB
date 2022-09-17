@@ -25,17 +25,13 @@ module BcdCounter4Bits(output [15:0] count, input [3:0] up, down, input set9, se
     reg [3:0] rup, rdown;
     reg is9,is0;
     integer i;
-    wire enable;
-    
-    // enable if not overflow or underflow
-    assign enable = ~(cout[3] | bout[3]); 
 
     // 4 bits counter
     generate 
         for(genvar i = 0; i < 4; i = i + 1)
             // for bit 1-3 check bout and cout of the previous bit
-            if (i > 0) BcdCounter counter(count[4*i +: 4], cout[i], bout[i], up[i] | cout[i-1], down[i] | bout[i-1], set9 | cout[3], set0 | bout[3], 1, clk);
-            else BcdCounter counter(count[4*i +: 4], cout[i], bout[i], up[i], down[i], set9 | cout[3], set0 | bout[3], 1, clk);
+            if (i > 0) BcdCounter counter(count[4*i +: 4], cout[i], bout[i], up[i] | cout[i-1], down[i] | bout[i-1], set9 | cout[3], set0 | bout[3], clk);
+            else BcdCounter counter(count[4*i +: 4], cout[i], bout[i], up[i], down[i], set9 | cout[3], set0 | bout[3], clk);
     endgenerate
 
 endmodule

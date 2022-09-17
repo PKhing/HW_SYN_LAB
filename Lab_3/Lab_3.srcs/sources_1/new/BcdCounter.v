@@ -21,17 +21,15 @@
 
 
 module BcdCounter(output [3:0] count, output cout, bout,
-                  input up, down, set9, set0, enable, clk);
+                  input up, down, set9, set0, clk);
     reg [3:0] count = 0;
     reg cout = 0;
     reg bout = 0;
     
     always @(posedge clk) begin
-        // not enable don't change value
-        if(~enable) count = count;
 
         // set
-        else if(set9) count = 9;
+        if(set9) count = 9;
         else if(set0) count = 0;
 
         // count up

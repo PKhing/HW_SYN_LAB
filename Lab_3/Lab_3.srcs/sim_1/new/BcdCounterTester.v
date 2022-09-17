@@ -3,7 +3,7 @@ module BcdCounterTester();
     wire [3:0] count;
     wire bout, cout;
     
-    BcdCounter counter(count,cout,bout,up,down,set9,set0,1,clk);
+    BcdCounter counter(count,cout,bout,up,down,set9,set0,clk);
     
     always #10 clk = ~clk;
     
