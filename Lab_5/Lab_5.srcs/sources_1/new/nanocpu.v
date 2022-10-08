@@ -72,7 +72,7 @@ wire	sel_data;
 wire	sel_b;
 wire	z_new;
 wire	c_new;
-wire	[1:0]	alu_ops;
+wire	[2:0]	alu_ops;
 
 wire	[31:0]	A;
 wire	[31:0]	B;
@@ -104,6 +104,7 @@ control	CONTROLUNIT(
 	ext_ops,
 	alu_ops,
 	opcode,
+	reserved,
 	z_new
 	);
 
