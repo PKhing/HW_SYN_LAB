@@ -24,12 +24,13 @@ module cpuTester();
     
     reg 	[31:0]	p_data;
     wire	[31:0]	d_data;
+    wire	[31:0]	d_address;
     reg     [2:0] alu_op;
     reg		clock;
     reg		nreset;
     reg     st = 0;
 
-    nanocpu	CPU(.p_data(p_data),.d_data(d_data),.clock(clock),.nreset(nreset));
+    nanocpu	CPU(.p_data(p_data),.d_data(d_data),.clock(clock),.nreset(nreset),.d_address(d_address));
 
     always #10 clock = ~clock;
 
@@ -63,7 +64,7 @@ module cpuTester();
         
         #20
         // writemem SW r0 0(r0)
-        p_data = 32'b011100_00000_00000_0000000000000000;
+        p_data = 32'b011100_00000_00000_0000000000000001;
 
         #20
         // writemem SW r1 0(r1)

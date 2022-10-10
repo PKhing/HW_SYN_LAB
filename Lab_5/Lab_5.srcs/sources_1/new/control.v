@@ -126,7 +126,7 @@ begin
 end
 
 // alu_ops
-always @(opcode)
+always @(opcode or reserved)
 begin
 	case (opcode)
 		ORI : alu_ops=3'b010;

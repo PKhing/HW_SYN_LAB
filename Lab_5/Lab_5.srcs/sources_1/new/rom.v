@@ -18,7 +18,11 @@ reg	[DATA_WIDTH-1:0]	mem[0:1<<ADDR_WIDTH -1];
 assign data=mem[address];
 
 initial begin
-	$readmemb("prog.list",mem);
+	$readmemb("C:/Users/PKhing/Desktop/Code/verilog/Lab_5/Lab_5.srcs/sources_1/new/prog.list",mem);
+end
+
+always @(address) begin
+	$display("%10d - PC[%d] -  %h\n",$time, address,data);	
 end
 
 endmodule

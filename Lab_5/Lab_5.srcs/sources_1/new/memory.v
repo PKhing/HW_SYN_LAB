@@ -19,18 +19,20 @@ reg	[DATA_WIDTH-1:0]	mem[0:1<<ADDR_WIDTH -1];
 
 reg	[DATA_WIDTH-1:0]	data_out;
 // Tri-State buffer
-assign data=(wr==0) ? data_out:32'bz;
+assign data=(wr==1||address>=15'h3ff8) ? 32'bz:data_out;
+// assign data= 32'bz;
 
 integer i;
 initial
 begin
-	$readmemb("data.list",mem);
+	$readmemb("C:/Users/PKhing/Desktop/Code/verilog/Lab_5/Lab_5.srcs/sources_1/new/data.list",mem);
 end
 
 always @(address)
 begin
-	$display("%10d - mem[%h] -  %h\n",$time, address,data_out);	
+	// $display("%b",address>=15'h3ffc);
 	data_out = mem[address];
+	// $display("%10d - mem[%h] -  %h\n",$time, address,data_out);	
 end
 
 always @(posedge clock)
