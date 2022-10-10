@@ -30,12 +30,9 @@ module switchIO(data, address, wr, clock, switch);
     input	wr;
     input	clock;
     input   [15:0]      switch;
-    wire [11:0] buffer;
+    reg [11:0] buffer;
 
-    wire dividedClk;
-    ClockDividerNBits #(14) div2(dividedClk, clock);
-    InputProcessor #(12,8) prUp(buffer,switch[11:0],dividedClk);
-    // assign buffer = switch[11:0];
+    always @(posedge clock) buffer = switch[11:0];
 
     always @(address)begin
         if(wr == 0)begin

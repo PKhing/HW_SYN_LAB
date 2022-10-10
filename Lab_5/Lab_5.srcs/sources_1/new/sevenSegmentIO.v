@@ -37,8 +37,7 @@ module sevenSegmentIO(seg, dp, an, data, address, wr, clock);
     wire dividedClk;
     ClockDividerNBits #(18) div(dividedClk, clock);
 
-    TDM tdm(seg,dp,an,num[3:0],num[7:4],num[11:8],num[15:12],dividedClk);
-    // TDM tdm(seg,dp,an,num[3:0],num[7:4],num[11:8],num[15:12],clock);
+    TDM tdm(seg,dp,an,num[15:12],num[11:8],num[7:4],num[3:0],dividedClk);
 
     always @(posedge clock) begin
         if(wr) 
