@@ -29,6 +29,7 @@ begin
 		3'b110: begin S=~A; Cout=0; end
 		3'b111: begin S=~B; Cout=0; end	
 	endcase
+	// $display("<%b %b>",Cin,Cout);
 end
 
 endmodule
