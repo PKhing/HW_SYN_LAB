@@ -23,7 +23,7 @@
 module UartReceive(output reg [7:0] data, output reg ready, input RsRx, input clk);
     reg [13:0] count;
     reg reading = 0;
-    reg [8:0] buffer;
+    reg [9:0] buffer;
     reg [4:0] bitCount = 0;
 
 
@@ -39,12 +39,12 @@ module UartReceive(output reg [7:0] data, output reg ready, input RsRx, input cl
         end
         else begin
             count = count + 1;
-            if(count == 14'd5000) buffer = {RsRx, buffer[8:1]};
-            if(count == 14'd10418) begin
+            if(count == 14'd5000) buffer = {RsRx, buffer[9:1]};
+            if(count == 14'd10417) begin
                 count = 0;
                 bitCount = bitCount + 1;
             end
-            if(bitCount == 5'd9) begin
+            if(bitCount == 5'd10) begin
                 data = buffer[8:1];
                 reading = 0;
                 ready = 1;
