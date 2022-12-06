@@ -40,8 +40,8 @@ module SystemVga(output [3:0]  vgaRed,vgaGreen,vgaBlue, output Hsync, Vsync, inp
     end
     
 
-    RgbRam #(30) v (vc[11:8],vc[7:4],vc[3:0],color1,color2,y,clk,video_on);
-    RgbRam #(40) h (hc[11:8],hc[7:4],hc[3:0],color1,color2,x,clk,video_on);
+    RgbRam #(30) v (vc[11:8],vc[7:4],vc[3:0],color1,color2,y);
+    RgbRam #(40) h (hc[11:8],hc[7:4],hc[3:0],color1,color2,x);
 
     // select type 
 

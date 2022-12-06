@@ -20,40 +20,25 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module RgbRam(output reg [3:0]  vgaRed,vgaGreen,vgaBlue,input [11:0]c1,c2, input [9:0] pos,input clk,video_on);
+module RgbRam(output [3:0] vgaRed, vgaGreen, vgaBlue,input [11:0] c1, c2, input [9:0] pos);
     parameter N = 30;
-
-    wire [3:0] r1,g1,b1,r2,g2,b2,dr,dg,db;
-
+    
+    wire [3:0] r1,g1,b1,r2,g2,b2;
     assign {r1,g1,b1} = c1;
     assign {r2,g2,b2} = c2;
-    assign dr = r1>r2? r1-r2:r2-r1;
-    assign dg = g1>g2? g1-g2:g2-g1;
-    assign db = b1>b2? b1-b2:b2-b1;
+
+    Color #(N) r (vgaRed,r1,r2,pos[9:4]);
+    Color #(N) g (vgaGreen,g1,g2,pos[9:4]);
+    Color #(N) b (vgaBlue,b1,b2,pos[9:4]);
     
-    reg [11:0] ram [N-1:0];
-    reg [3:0] diffram [N-1:0][15:0];
+endmodule
 
-    integer i,j;
+module Color (output reg [3:0] result, input [3:0] c1,c2, input [6:0] pos);
+    parameter N = 30;
 
-    // generate diff ram
-    initial 
-        for(i=0;i<N;i=i+1)
-            for(j=0;j<16;j=j+1)
-                diffram[i][j] = j*i/N;
-
-    // generate color
-    always @(posedge clk) begin
-        for(i=0;i<N;i=i+1) begin
-            if(r2>r1) ram[i][3:0] = r1 + diffram[i][dr];
-            else ram[N-i-1][3:0] = r2 + diffram[i][dr];
-            if(g2>g1) ram[i][7:4] = g1 + diffram[i][dg];
-            else ram[N-i-1][7:4] = g2 + diffram[i][dg];
-            if(b2>b1) ram[i][11:8] = b1 + diffram[i][db];
-            else ram[N-i-1][11:8] = b2 + diffram[i][db];
-        end
+    always @(*) begin
+        if (c2>c1) result = c1 + pos * (c2-c1)/N;
+        else result = c2 + (N-pos-1) * (c1-c2)/N;
     end
 
-    always @(posedge clk)
-        {vgaRed,vgaGreen,vgaBlue} = (video_on) ? ram[pos[9:4]] : 12'b0;
 endmodule
