@@ -19,15 +19,15 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module RgbRam(output reg [11:0] color,input [9:0] x, y, input [19:0] number, input [2:0] operator);
-    parameter NUM_WIDTH=7*3;
-    parameter NUM_HEIGHT=11*3;
-    parameter START_NUM_X = 27;
-    parameter START_NUM_Y = 30;
+    localparam NUM_WIDTH=7*3;
+    localparam NUM_HEIGHT=11*3;
+    localparam START_NUM_X = 27;
+    localparam START_NUM_Y = 30;
 
-    parameter OP_WIDTH=26;
-    parameter OP_HEIGHT=20;
-    parameter START_OP_X = 28;
-    parameter START_OP_Y = 80;
+    localparam OP_WIDTH=26;
+    localparam OP_HEIGHT=20;
+    localparam START_OP_X = 28;
+    localparam START_OP_Y = 80;
 
     wire [11:0] numRgb[4:0];
     wire [11:0] opRgb[3:0];
@@ -66,8 +66,8 @@ endmodule
 
 
 module NumberRam(output reg [11:0] color,input [7:0] x,y, input [3:0] number);
-    parameter NUM_WIDTH=7*3;
-    parameter NUM_HEIGHT=11*3;
+    localparam NUM_WIDTH=7*3;
+    localparam NUM_HEIGHT=11*3;
     
     reg [11:0] numRom[0:NUM_WIDTH*NUM_HEIGHT*14-1];
     initial begin
@@ -82,8 +82,8 @@ module NumberRam(output reg [11:0] color,input [7:0] x,y, input [3:0] number);
 endmodule
 
 module OperatorRam(output reg [11:0] color,input [7:0] x,y, input [1:0] number, input isSelected);
-    parameter OP_WIDTH=26;
-    parameter OP_HEIGHT=20;
+    localparam OP_WIDTH=26;
+    localparam OP_HEIGHT=20;
     
     reg [11:0] opRom[0:OP_WIDTH*OP_HEIGHT*4-1];
     initial begin

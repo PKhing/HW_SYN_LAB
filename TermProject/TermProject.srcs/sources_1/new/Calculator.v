@@ -1,6 +1,6 @@
 module Calculator (
     output reg isminus, showerror, 
-    output reg [31:0] numOut, reg [2:0] op,
+    output reg [31:0] numOut, reg [2:0] op, [4:0] state,
     input ack, [2:0] flag, [3:0] numIn, clk
 );
     reg [4:0] state, nstate;
@@ -46,7 +46,6 @@ module Calculator (
                 numA=-numA;
             end
             5'd5: begin
-                isminus=0;
                 numB=0;
                 selB=0;
             end
@@ -55,6 +54,7 @@ module Calculator (
             end
             5'd8: begin //Input numB
                 selB=1;
+                isminus=0;
                 showerror=0;
                 if (numB<1000) begin
                     numB = numB*10 + numIn;
@@ -66,16 +66,24 @@ module Calculator (
                 numOut=0;
                 selB=1;
                 showerror=0;
+                isminus=0;
             end
             5'd10: if(selB==0) numB=numA;
             5'd11: numAns = numA + numB;
             5'd12: numAns = numA - numB;
             5'd13: numAns = numA * numB;
             5'd14: error=1;
-            5'd15: numAns = numA / numB;
+            5'd15: begin 
+                if (numA[31]) begin 
+                    numA = -numA;
+                    isminus=1;
+                end
+                numAns = numA / numB;
+                if (isminus) numAns = -numAns;
+            end
             5'd16: begin
                 numA=numAns;
-                if (numAns<0) begin
+                if (numAns[31]) begin
                     numAns= -numAns;
                     isminus=1;
                 end
@@ -103,12 +111,13 @@ module Calculator (
                     case (flag)
                         CLEAR,RESET: nstate = 5'd0;
                         NUM: nstate = 5'd2;
+                        ENTER: nstate = 5'd1;
                         SUB: if(numA==0) nstate = 5'd3; else nstate = 5'd4;
                         default: nstate = 5'd4;
                     endcase
                 end
             end
-            5'd2: nstate = 5'd1;
+            5'd2: nstate = 5'd20;
             5'd3: nstate = 5'd1;
             5'd4: nstate = 5'd5;
             5'd5: nstate = 5'd6;
@@ -134,6 +143,7 @@ module Calculator (
                     SUB : nstate = 5'd12;
                     MUL : nstate = 5'd13;
                     DIV : if (numB==0) nstate = 5'd14; else nstate = 5'd15;
+                    default: nstate = 5'd7;
                 endcase
             end
             5'd11: nstate = 5'd16;
@@ -155,11 +165,12 @@ module Calculator (
                 end
             end
             5'd19: nstate = 5'd2;
+            5'd20: nstate = 5'd1; //State Delay
             default: nstate = 5'd0;
         endcase
     end
 
-    always @(posedge clk) begin
+    always @(*) begin
         state = nstate;
     end
 endmodule
